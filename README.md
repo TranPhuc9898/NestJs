@@ -28,3 +28,9 @@ $ yarn run start:prod
 # Lib
 $ yarn add uuix
 ```
+
+### LEARN DAILY
+
+```19/01/2024
+# 48. Persistence: Getting a Task by ID
+```
