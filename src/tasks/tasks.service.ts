@@ -58,16 +58,16 @@ export class TasksService {
   //   this.tasks = this.tasks.filter((task) => task.id !== found.id);
   // }
 
-  async deleteTask(id: string): Promise<void> {
-    const result = await this.tasksRepository.delete(id);
-    console.log(
-      '%cMyProject%cline:61%cresult',
-      'color:#fff;background:#ee6f57;padding:3px;border-radius:2px',
-      'color:#fff;background:#1f3c88;padding:3px;border-radius:2px',
-      'color:#fff;background:rgb(130, 57, 53);padding:3px;border-radius:2px',
-      result,
-    );
-  }
+  // async deleteTask(id: string): Promise<void> {
+  //   const result = await this.tasksRepository.delete(id);
+  //   console.log(
+  //     '%cMyProject%cline:61%cresult',
+  //     'color:#fff;background:#ee6f57;padding:3px;border-radius:2px',
+  //     'color:#fff;background:#1f3c88;padding:3px;border-radius:2px',
+  //     'color:#fff;background:rgb(130, 57, 53);padding:3px;border-radius:2px',
+  //     result,
+  //   );
+  // }
   // updateTaskStatus(id: string, status: TaskStatus) {
   //   const task = this.getTaskById(id);
   //   task.status = status;
