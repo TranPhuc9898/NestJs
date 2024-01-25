@@ -3,7 +3,6 @@ import { TaskStatus } from '../task-status.enum';
 
 export class GetTasksFilterDto {
   // Sử dụng class-validator
-
   @IsOptional()
   @IsEnum(TaskStatus)
   status?: TaskStatus;

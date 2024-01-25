@@ -1,7 +1,18 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Delete,
+  Patch,
+  Query,
+} from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { Task } from './task.entity';
+import { UpdateTaskDto } from './dto/update-tasks.dto';
+import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 
 @Controller('tasks')
 
@@ -20,6 +31,16 @@ export class TasksController {
   //     return this.tasksService.getAllTasks();
   //   }
   // }
+
+  @Get() // Phương thức
+  getTasks() {
+    return this.tasksService.getTasks();
+  }
+
+  @Get('/:GetTaskFilter') // Phương thức
+  getTasksFilter(@Query() filterDto: GetTasksFilterDto): Promise<Task[]> {
+    return this.tasksService.getTasksFilter(filterDto);
+  }
 
   @Get('/:id')
   getTaskById(@Param('id') id: string): Promise<Task> {
@@ -49,18 +70,28 @@ export class TasksController {
   //   return this.tasksService.createTask(CreateTaskDto);
   // }
 
-  // @Delete('/:id')
-  // deleteTask(@Param('id') id: string): Promise<void> {
-  //   return this.tasksService.deleteTask(id);
-  // }
+  @Delete('/:id')
+  deleteTask(@Param('id') id: string): Promise<void> {
+    return this.tasksService.deleteTask(id);
+  }
 
+  // Này update 1 trường
   // @Patch('/:id/status')
   // updateTaskStatus(
   //   @Param('id') id: string,
   //   @Body() updateTaskStatusDto: UpdateTaskStatusDto,
-  // ): Task {
+  // ): Promise<Task> {
   //   //  vì updateTaskStatusDto là 1 {} nên khi khai báo biến status
   //   const { status } = updateTaskStatusDto;
   //   return this.tasksService.updateTaskStatus(id, status);
   // }
+
+  /* Này Update tất cả trường trong DTO **/
+  @Patch('/:id')
+  updateTask(
+    @Param('id') id: string,
+    @Body() updateTaskDto: Partial<UpdateTaskDto>,
+  ): Promise<Task> {
+    return this.tasksService.updateTask(id, updateTaskDto);
+  }
 }
