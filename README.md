@@ -34,3 +34,7 @@ $ yarn add uuix
 ```19/01/2024
 # 48. Persistence: Getting a Task by ID
 ```
+
+### Nodemon.json
+
+$ Để có thể làm source tự động chạy lại khi có 1 bất cứ thay đổi trong source

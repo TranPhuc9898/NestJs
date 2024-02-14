@@ -10,6 +10,7 @@ import { UpdateTaskDto } from './dto/update-tasks.dto';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 
 import { _ } from 'lodash';
+import { DatabaseEmptyException } from './task-empty.exception';
 
 @Injectable()
 export class TasksService {
@@ -22,7 +23,7 @@ export class TasksService {
     const found = await this.tasksRepository.findOne({ where: { id } });
     if (!found) {
       throw new NotFoundException(
-        `Đéo có người để chịch vui lòng kiếm lại người khác "${id}"`,
+        `Đéo có người để ịch cặp mông này xin vui lòng kiếm lại người khác "${id}"`,
       );
     }
     return found;
@@ -31,10 +32,19 @@ export class TasksService {
   async getTasks(): Promise<Task[]> {
     // Tạo query builder
     const query = this.tasksRepository.createQueryBuilder('task');
-    if (_.isEmpty(query)) {
-      throw new NotFoundException('Data rỗng');
+
+    // Lấy danh sách các task từ bảng "task"
+    const tasks = await query.getMany();
+
+    // Kiểm tra xem có task nào không
+    if (tasks.length === 0) {
+      // Nếu không có bản ghi nào trong bảng "task", throw ra một custom exception
+      throw new DatabaseEmptyException();
     }
-    return await query.getMany();
+
+    // Nếu có bản ghi trong bảng "task", trả về danh sách các task
+    console.log('Tasks found in the database.');
+    return tasks;
   }
 
   // Hàm filterTask
@@ -59,7 +69,9 @@ export class TasksService {
     const tasks = await query.getMany();
 
     if (tasks.length === 0) {
-      throw new NotFoundException('Không tìm thấy dữ liệu phù hợp.');
+      throw new NotFoundException(
+        'Không tìm thấy mông bự nào trong database cả',
+      );
     }
 
     return tasks;
@@ -68,7 +80,9 @@ export class TasksService {
   // Hàm kiểm tra filter search
   checkFilterSearch(filterDto: GetTasksFilterDto): void {
     if (_.isEmpty(filterDto.search) || filterDto.search.length < 3) {
-      throw new NotFoundException('Chuỗi tìm kiếm phải chứa ít nhất 3 ký tự.');
+      throw new NotFoundException(
+        'Cần gõ 3 ký tự chở lên mới kiếm được mông bưs',
+      );
     }
   }
   // getTaskById(id: string): Task {
