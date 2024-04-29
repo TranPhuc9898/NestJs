@@ -13,12 +13,14 @@ import {
 } from './dto/auth-credentials.dto';
 
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    private jwtService: JwtService,
   ) {}
 
   async signUp(
@@ -67,5 +69,9 @@ export class AuthService {
         'Kiểm tra lại user hoặc mật khẩu hem đúng',
       );
     }
+  }
+
+  async findUserByHelloId(helloId: string): Promise<User | undefined> {
+    return this.userRepository.findOne({ helloId });
   }
 }

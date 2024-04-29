@@ -3,6 +3,7 @@ import { TasksModule } from './tasks/tasks.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Task } from './tasks/task.entity';
 import { AuthModule } from './auth/auth.module';
+import { FacebookModule } from './facebook/facebook.module';
 // Bao nhiêu class thì vứt hết vào đây
 @Module({
   imports: [
@@ -13,12 +14,13 @@ import { AuthModule } from './auth/auth.module';
       port: 5432,
       username: 'postgres',
       password: 'postgres',
-      database: 'task-management',
+      database: 'postgres',
       autoLoadEntities: true,
       synchronize: true,
       entities: [Task],
     }),
     AuthModule,
+    FacebookModule,
   ],
 })
 export class AppModule {}
