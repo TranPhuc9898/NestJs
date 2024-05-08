@@ -15,12 +15,17 @@ import {
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
+// Import Interface
+import { JwtPayload } from './dto/jwt-payload.interface';
+import { TokenService } from 'src/token/token.service';
+
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private jwtService: JwtService,
+    private tokenService: TokenService,
   ) {}
 
   async signUp(
@@ -32,20 +37,33 @@ export class AuthService {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const randomId = Math.floor(1000 + Math.random() * 9000).toString();
-    const userId = '#' + randomId;
+    const helloIdRandom = '#' + randomId;
 
     const user = this.userRepository.create({
       username,
       password: hashedPassword,
-      helloId: `${userId}`,
+      helloId: `${helloIdRandom}`,
     });
 
     try {
       await this.userRepository.save(user);
-
-      // Generate a random 4-digit number for userId
-
-      return { message: 'User created successfully', userId: userId };
+      // Generate a JWT token after user registration
+      const payload: JwtPayload = { username };
+      const token = await this.jwtService.sign(payload);
+      // // Generate a random 4-digit number for userId
+      // try {
+      //   // It should be something like this:
+      //   const expiryDate = new Date(); // Example: Set expiry date to current date and time
+      //   await this.tokenService.storeToken(helloIdRandom, token, expiryDate);
+      // } catch (error) {
+      //   console.error(error);
+      //   throw new InternalServerErrorException('Failed to store token');
+      // }
+      return {
+        message: 'User created successfully',
+        userId: helloIdRandom,
+        token,
+      };
     } catch (error) {
       // handle error
       if (error.code === '23505') {

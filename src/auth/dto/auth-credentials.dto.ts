@@ -16,4 +16,5 @@ export class AuthCredentialsDto {
 export class SignUpResultDto {
   message: string;
   userId: string;
+  token: string; // new field
 }

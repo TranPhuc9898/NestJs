@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Post,
-  Get,
-  UseGuards,
-  Req,
-  Param,
-  NotFoundException,
-} from '@nestjs/common';
+import { Body, Controller, Post, Get, UseGuards, Req } from '@nestjs/common';
 import {
   AuthCredentialsDto,
   SignUpResultDto,
@@ -34,13 +25,11 @@ export class AuthController {
     return this.authService.signIn(authCredentialsDto);
   }
 
-  @Get(':helloId')
-  async getUserByHelloId(@Param('helloId') helloId: string) {
-    const user = await this.authService.findUserByHelloId(helloId);
-    if (!user) {
-      throw new NotFoundException(`User with helloId ${helloId} not found`);
-    }
-    return user;
+  @Post('findUserByHelloId')
+  async findUserByHelloId(
+    @Body('helloId') helloId: string,
+  ): Promise<User | undefined> {
+    return this.authService.findUserByHelloId(helloId);
   }
 
   @Get('facebook')
