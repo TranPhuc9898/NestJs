@@ -8,8 +8,16 @@ export class InfoController {
   @Post('/create')
   async createInfo(
     @Body('helloId') helloId: string,
-    @Body('email') email: string, // Thêm tham số email vào phương thức
+    @Body('email') email: string,
+    @Body('backgroundColor') backgroundColor: string, // Thêm tham số email vào phương thức
   ): Promise<any> {
-    return this.infoService.createInfoForUser(helloId, email); // Truyền thêm tham số email vào phương thức createInfo
+    return this.infoService.createInfoForUser(helloId, email, backgroundColor); // Truyền thêm tham số email vào phương thức createInfo
+  }
+
+  @Post('/updateBackground') async updateBackground(
+    @Body('helloId') helloId: string,
+    @Body('backgroundColor') backgroundColor: string,
+  ): Promise<any> {
+    return this.infoService.updateBackground(helloId, backgroundColor);
   }
 }
